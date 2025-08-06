@@ -1,0 +1,8 @@
+annotation rest api
+verifiena ny existance 
+    - si existe de mijery valeur de retour
+        - modelandview recuoerer valeur data transformer en json
+        - sinon recuperer de transformer en json (GSON)
+
+ne plus utiliser dospatch forward utiliser dorectement getwritter
+avadika text/json

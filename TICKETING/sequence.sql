@@ -1,0 +1,14 @@
+create sequence ville_seq start with 1 increment by 1;
+create sequence type_siege_seq start with 1 increment by 1;
+create sequence model_seq start with 1 increment by 1;
+create sequence role_seq start with 1 increment by 1;
+create sequence avion_seq start with 1 increment by 1;
+create sequence vols_seq start with 1 increment by 1;
+create sequence users_seq start with 1 increment by 1;
+create sequence reservation_mere_seq start with 1 increment by 1;
+create sequence promotion_seq start with 1 increment by 1;
+create sequence place_seq start with 1 increment by 1;
+create sequence reservation_seq start with 1 increment by 1;
+create sequence place_reserve_seq start with 1 increment by 1;
+create sequence type_param_seq start with 1 increment by 1;
+create sequence parametre_seq start with 1 increment by 1;

@@ -1,0 +1,21 @@
+<body>
+<h1>Liste des utilisateurs</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td>
+            <a th:href="@{'/list/' + ${user.getIdUsers()}}" th:text="${user.getNom()}">Nom</a>
+        </td>
+        <td th:text="${user.getEmail()}">Email</td>
+    </tr>
+    </tbody>
+</table>
+<h1>List de parametre</h1>
+<a th:href="@{/list-param}">Parametres</a>
+</body>

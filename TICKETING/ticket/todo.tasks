@@ -1,0 +1,6 @@
+☐ create passport model
+☐ bien initialiser le modele de passport
+☐ generate uuid pour les noms de fichier de passport 
+☐ inserer dans la base le lien du passport avec l'id du client 
+☐ verifier lexport pdf 
+☐ 

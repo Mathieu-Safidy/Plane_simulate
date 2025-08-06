@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mise à jour du Paramètre</title>
+</head>
+<body>
+<h1>Mise à jour du Paramètre</h1>
+
+<!-- Formulaire de mise à jour du paramètre -->
+<form th:object="${parametre}" th:action="@{/param/update}" method="post">
+
+    <label for="idParametre">ID Paramètre:</label>
+    <input type="text" th:field="*{idParametre}" id="idParametre" name="idParametre"/><br>
+
+    <label for="idType">Type:</label>
+    <input type="text" th:field="*{idType.idType}" th:text="*{idType.libele}" id="idType" name="idType"/><br>
+
+    <label for="valeur">Valeur:</label>
+    <input type="text" th:field="*{valeur}" id="valeur" name="valeur"/><br>
+
+    <button type="submit">Mettre à jour</button>
+</form>
+
+</body>
+</html>

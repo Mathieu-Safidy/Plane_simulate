@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Paramètres</title>
+</head>
+<body>
+<h1>Liste des Paramètres</h1>
+
+<!-- Affichage des messages de succès -->
+<div th:if="${success}" th:class="'alert alert-success'">
+    <span th:text="${success}"></span>
+</div>
+
+<!-- Affichage des messages d'erreur -->
+<div th:if="${error}" th:class="'alert alert-danger'">
+    <span th:text="${error}"></span>
+</div>
+<a th:href="@{/}">Index</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Nom</th>
+        <th>Valeur</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iteration sur la liste de paramètres -->
+    <tr th:each="parametre : ${parametres}">
+        <td th:text="${parametre.idParametre}"></td>
+        <td th:text="${parametre.idType.libele}"></td>
+        <td th:text="${parametre.valeur}"></td>
+        <td>
+            <a th:href="@{'/param/update/' + ${parametre.idParametre}}">Modifier</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
