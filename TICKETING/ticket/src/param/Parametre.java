@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.event.Vols;
 import utility.Entity;
 import utility.annotation.Column;
 import utility.annotation.Ignore;

@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -418,9 +419,11 @@ public class Scanner {
 
     public String checkView(Object resultat) {
         if (resultat instanceof ModelView) {
-            HashMap<String, Object> mappe = ((ModelView) resultat).getData();
+            ModelView result = (ModelView)resultat;
+            HashMap<String, Object> mappe = result.getData();
             Gson gson = new Gson();
             String json = gson.toJson(mappe);
+         
             return json;
         }
         return (String) resultat;
@@ -470,7 +473,7 @@ public class Scanner {
             Method method = getMethod(incancier.getClass(), this.getMethode(map, verb));
             if (method != null && this.checkExistVerb(map, verb) && request.getAttribute("error") == null) {
                 MiddleWare middleWare = null;
-                Class<?> classMere = (Class<?>)incancier;
+                Class<?> classMere = (Class<?>)incancier.getClass();
                 if(classMere.getAnnotation(MiddleWare.class) != null) {
                     middleWare = method.getAnnotation(MiddleWare.class);
                 }

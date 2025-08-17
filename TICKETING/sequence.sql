@@ -12,3 +12,4 @@ create sequence reservation_seq start with 1 increment by 1;
 create sequence place_reserve_seq start with 1 increment by 1;
 create sequence type_param_seq start with 1 increment by 1;
 create sequence parametre_seq start with 1 increment by 1;
+create sequence passport_seq start with 1 increment by 1;

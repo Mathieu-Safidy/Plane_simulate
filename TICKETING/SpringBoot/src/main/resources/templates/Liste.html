@@ -5,11 +5,31 @@
     <title>Liste des Réservations</title>
 </head>
 <body>
+<a th:href="@{/}">Retour</a>
 <h1>Liste des Réservations</h1>
 <table >
     <tbody>
-    <tr th:each="reservation : ${listreservationmere}">
+    <tr th:each="reservation : ${listreservation}">
         <table border="1">
+            <thead>
+            <tr>
+                <th th:text="${reservation.getIdReservationMere().getIdReservationMere()}"></th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Id User</th>
+            </tr>
+            <tr>
+                <td >
+                    <a th:href="@{'/detail/reservation/'+${reservation.getIdReservation()}}" th:text="${reservation.getIdReservation()}"></a>
+                </td>
+                <td th:text="${reservation.getDateReservation()}"></td>
+                <td th:text="${reservation.getIdUsers().getIdUsers()}"></td>
+            </tr>
+            </thead>
+        </table>
+        <!-- <table border="1">
             <thead>
             <tr>
                 <th th:text="${reservation.getIdReservationMere()}"></th>
@@ -21,14 +41,13 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Thymeleaf pour parcourir la liste des réservations -->
             <tr th:each="reservationdetail : ${reservation.getReservations()}">
                 <td th:text="${reservationdetail.getIdReservation()}"></td>
                 <td th:text="${reservationdetail.getDateReservation()}"></td>
                 <td th:text="${reservationdetail.getIdUsers().getNom()}"></td>
             </tr>
             </tbody>
-        </table>
+        </table> -->
     </tr>
     </tbody>
 </table>

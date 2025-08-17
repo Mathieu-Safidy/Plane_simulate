@@ -99,15 +99,17 @@ public class VolsController {
         return view;
     }
 
-    @MiddleWare(acces = "Customer",linkLogin = "Login.jsp")
+    @MiddleWare(acces = "Client",linkLogin = "Login.jsp")
     @POST
     @PathLink(path = "/reserver")
     public String reserver(@AnnotParam(name = "filtre") Filtre filtre , Session session , @AnnotParam(name = "passport") FileMap file ) throws Exception {
         ReservationMere resamere = new ReservationMere();
         Reservation reservation = new Reservation();
         properties.load(input);
+        
         VDetailReservation vDetailReservation = new VDetailReservation();
         try {
+                reservation.setFile(file);
                 resamere.setIdVols(filtre.getIdVols());
                 resamere = (ReservationMere)resamere.find(null, null)[0];
 
@@ -115,7 +117,11 @@ public class VolsController {
                 reservation.setIdReservationMere(resamere.getIdReservationMere());
                 reservation.setIdUser((String)session.getSession("userId"));
                 reservation.setIdType(filtre.getIdType());
-                reservation.setNombre(filtre.getPlace());
+                // reservation.setNombre(filtre.getPlace());
+
+                System.out.println("nombre adult = "+filtre.getPlaceAdult()+" et enfant "+filtre.getPlaceEnfant());
+                reservation.setNombre_adult(filtre.getPlaceAdult());
+                reservation.setNombre_enfant(filtre.getPlaceEnfant());
 
                 vDetailReservation.setIdReservationMere(resamere.getIdReservationMere());
                 vDetailReservation.setIdType(filtre.getIdType());
@@ -123,7 +129,9 @@ public class VolsController {
                 
                 reservation.setDetailReservation(vDetailReservation);
 
-                System.out.println("reserver : "+reservation.getIdUser());
+                
+
+                System.out.println("reserver : "+reservation.getIdUser() +" et fichier passport "+file );
                 reservation.reserver();
 
         } catch (ClientException e) {
@@ -141,9 +149,12 @@ public class VolsController {
     @PathLink(path = "/list")
     public ModelView listVols(@AnnotParam(name = "filtre") Filtre filtre) throws Exception {
         ModelView view = new ModelView("list-vols.jsp");
-        List<Vols> volDispo = new ArrayList<>();
+        List<VDetailVolsDispo> volDispo = new ArrayList<>();
         Vols vol = new Vols();
-        volDispo = vol.convertToVols(vol.find(null, null));
+        VDetailVolsDispo voldis = new VDetailVolsDispo();
+        System.out.println("OUT");
+        volDispo = voldis.convertToVDetailVolsDispo(voldis.find(null, null));
+        List<Vols> vols = vol.convertToVols(vol.find(null, null));
         if(filtre != null) {
             volDispo = filtre.filtrerVols();
         }
@@ -152,7 +163,8 @@ public class VolsController {
         List<Ville> villes = new ArrayList<>();
         villes = ville.convertToVille(ville.find(null, null));
         view.addObject("villes", villes);
-        view.addObject("vols", volDispo);
+        view.addObject("volsdispo", volDispo);
+        view.addObject("vols", vols);
         return view;
     }
 
@@ -268,6 +280,18 @@ public class VolsController {
     public String deleteVols(@AnnotParam(name = "id_vols") String id_vols) throws Exception { 
         Vols vol = new Vols();
         try {
+
+            ReservationMere reservationMere = new ReservationMere();
+            reservationMere.setIdVols(id_vols);
+            reservationMere = reservationMere.convertToReservationMere(reservationMere.find(null, null)).get(0);
+            DetailSiege detailSiege = new DetailSiege();
+            detailSiege.setIdReservationMere(reservationMere.getIdReservationMere());
+            List<DetailSiege> details = detailSiege.convertToDetailSiege(detailSiege.find(null, null));
+            for (DetailSiege detailSiege2 : details) {
+                detailSiege2.delete();
+            }
+            System.out.println("Supression de detail siege");
+            reservationMere.delete();
             vol.setIdVols(id_vols);
             vol.delete();
         } catch (Exception e) {

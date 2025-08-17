@@ -67,11 +67,11 @@ public class FrontController extends HttpServlet {
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response, String verb)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
+        // PrintWriter out = response.getWriter();
         String url = request.getRequestURL().toString();
-        System.out.println("session instancier..");
+        // System.out.println("session instancier..");
         scan.initSession(this.urlMap, request.getSession());
-        System.out.println("session instancier...");
+        // System.out.println("session instancier...");
         request.getSession().removeAttribute("error");
         String path = request.getRequestURI();
 
@@ -135,7 +135,8 @@ public class FrontController extends HttpServlet {
                                     String linkredirect = ((String)res).split(":")[1];
                                     String finalLink = request.getContextPath()+linkredirect;
                                     response.sendRedirect(finalLink);
-                                }else {
+                                }else {        
+                                    PrintWriter out = response.getWriter();
                                     out.println(res);
                                 }
                             } else if (res instanceof ModelView) {
@@ -146,6 +147,17 @@ public class FrontController extends HttpServlet {
                                 if (request.getAttribute("error") == null) {
                                     Scanner.referer = null;
                                 }
+                                // if (view.getBody() != null && view.isDownload() && view.getFilename() != null) {
+                                //     try (OutputStream output = response.getOutputStream()){
+                                //         byte[] buffer = view.getBody();
+                                //         response.setContentType("application/octet-stream");
+                                //         response.setHeader("Content-Disposition", "attachment;filename="+view.getFilename());
+                                //         response.setContentLength(buffer.length);
+                                //         output.write(buffer);
+                                //     } catch (Exception e) {
+                                //         e.printStackTrace();
+                                //     }
+                                // }
                                 RequestDispatcher dispatch = request.getRequestDispatcher(link);
                                 HashMap<String, Object> mape = view.getData();
                                 for (Map.Entry<String, Object> entry : mape.entrySet()) {
@@ -176,6 +188,8 @@ public class FrontController extends HttpServlet {
                 // }
                 response.setContentType("text/json");
                 Gson json = new Gson();
+                
+                PrintWriter out = response.getWriter();
                 out.println(json.toJson(cl));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -209,7 +223,8 @@ public class FrontController extends HttpServlet {
         else {
             response.setContentType("text/json");
             ClientException cl = new ClientException(erreur, 500);
-            Gson json = new Gson();
+            Gson json = new Gson();        
+            PrintWriter out = response.getWriter();
             out.println(json.toJson(cl));
         }
     }

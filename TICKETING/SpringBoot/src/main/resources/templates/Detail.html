@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Detail reservation</title>
+</head>
+<body>
+    <a th:href="${referer}">Retour</a>
+    <h1 th:text="'Detail reservation Numero : ' + ${reservation.getIdReservation()}"></h1>
+    <p th:text="'Date de reservation : '+${reservation.getDateReservation()}"></p>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Type siege</th>
+            <th>Nom type</th>
+            <th>Nombre</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail : ${reservationDetail}">
+            <td th:text="${detail.getTypeSiege().getIdType()}"></td>
+            <td th:text="${detail.getTypeSiege().getNom()}"></td>
+            <td th:text="${detail.getCount()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h3>Les place reserver</h3>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Id place</th>
+            <th>Prix</th>
+            <th>Type de place</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="place : ${placeDetail}">
+            <td th:text="${place.idPlace}"></td>
+            <td th:text="${place.prix}"></td>
+            <td th:text="${place.idType.getNom()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

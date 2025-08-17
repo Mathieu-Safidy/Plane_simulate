@@ -48,6 +48,9 @@ BEGIN
     ELSIF TG_TABLE_NAME = 'type_param' THEN
         sequence_name := 'type_param_seq';
         sequence_preset := 'TPR';
+    ELSIF TG_TABLE_NAME = 'passport' THEN
+        sequence_name := 'passport_seq';
+        sequence_preset := 'PASS';
     ELSE
         RETURN NEW;
     END IF;
@@ -85,6 +88,8 @@ BEGIN
         NEW.id_parametre := generated_id;
     ELSIF TG_TABLE_NAME = 'type_param' THEN
         NEW.id_type := generated_id;
+    ELSIF TG_TABLE_NAME = 'passport' THEN
+        NEW.id_passport := generated_id;    
     END IF;
 
     RETURN NEW;

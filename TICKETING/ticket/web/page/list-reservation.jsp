@@ -38,6 +38,7 @@
                             <th>Date reservation</th>
                             <th>Classe</th>
                             <th>Option</th>
+                            <th>action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +54,7 @@
                                     <input type="hidden" name="filtre_idReservation" value="<%=reservation.getIdReservation() %>" >
                                     <input type="submit" value="Annuler">
                                 </form>
+                                <td><a href="<%=request.getContextPath() %>/Api/dupliquer?id=<%=reservation.getIdReservation()%>">Exporter</a></td>
                             </td>
                         </tr>
                         <% } %>

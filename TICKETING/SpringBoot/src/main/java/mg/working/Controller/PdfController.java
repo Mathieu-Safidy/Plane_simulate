@@ -1,7 +1,10 @@
 package mg.working.Controller;
 
+import mg.working.Dto.ReservationDto;
 import mg.working.Service.PdfGeneratorService;
 import mg.working.Service.ReservationMereService;
+import mg.working.Service.ReservationService;
+import mg.working.model.PlaceReserve;
 import mg.working.model.Reservation;
 import mg.working.model.ReservationMere;
 import org.springframework.http.HttpHeaders;
@@ -19,10 +22,12 @@ public class PdfController {
 
     private final ReservationMereService reservationMereService;
     private final PdfGeneratorService pdfGeneratorService;
+    private final ReservationService reservationService;
 
-    public PdfController(ReservationMereService reservationMereService, PdfGeneratorService pdfGeneratorService) {
+    public PdfController(ReservationMereService reservationMereService, PdfGeneratorService pdfGeneratorService, ReservationService reservationService) {
         this.reservationMereService = reservationMereService;
         this.pdfGeneratorService = pdfGeneratorService;
+        this.reservationService = reservationService;
     }
 
 //    @GetMapping("/pdf/{id}")
@@ -45,11 +50,11 @@ public class PdfController {
     @PostMapping("/pdf")
     public ResponseEntity<?> pdf(@RequestBody Map<String, Object> body) {
         String id = (String)body.get("id");
-        Optional<ReservationMere> reservationMere = reservationMereService.findBydId(id);
+        Optional<Reservation> reservation = reservationService.getByIdService(id);
         try {
-            if (reservationMere.isPresent()) {
-                List<Reservation> reservations = reservationMere.get().getReservations();
-                byte[] pdfBytes = pdfGeneratorService.generatePdf(reservationMere.get());
+            if (reservation.isPresent()) {
+                byte[] pdfBytes = pdfGeneratorService.generatePdf(reservation.get());
+                System.out.println("fichier"+pdfBytes);
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=reservation_" + id + ".pdf")
                         .contentType(MediaType.APPLICATION_PDF)

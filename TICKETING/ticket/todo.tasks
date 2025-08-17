@@ -1,6 +1,6 @@
-☐ create passport model
-☐ bien initialiser le modele de passport
-☐ generate uuid pour les noms de fichier de passport 
+✔ create passport model @done (16/08/2025 13:04:13)
+✔ bien initialiser le modele de passport @done (16/08/2025 13:04:23)
+✔ generate uuid pour les noms de fichier de passport @done (16/08/2025 13:09:52)
 ☐ inserer dans la base le lien du passport avec l'id du client 
 ☐ verifier lexport pdf 
 ☐ 

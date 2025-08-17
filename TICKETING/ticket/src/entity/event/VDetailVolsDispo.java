@@ -206,7 +206,8 @@ public class VDetailVolsDispo extends Entity {
         try {
             Avion avion = new Avion();
             avion.setIdAvion(this.getIdAvion());
-            this.setAvion((Avion) avion.find(null, null)[0]);
+            this.setAvion(avion.convertToAvion(avion.find(null, null)[0]));
+            System.out.println("avionnn = "+this.getAvion() +" ; "+this.getIdAvion());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,9 +249,11 @@ public class VDetailVolsDispo extends Entity {
             }
             if(this.idType != null) {
                 this.setTypeBase();
+                System.out.println("avion dans type base "+this.getAvion());
             }
             if (this.idType!= null && this.idVols!= null && this.idReservationMere!= null) {
                 this.setDetailBase();
+                System.out.println("avion dans detail base "+this.getAvion());
             }
         } catch (Exception e) {
             System.err.println("Erreur lors de l'initialisation des relations : " + e.getMessage());
@@ -262,6 +265,7 @@ public class VDetailVolsDispo extends Entity {
         for (Object prod : obj) {
             VDetailVolsDispo product = (VDetailVolsDispo) prod;
             product.manyToOne();
+            System.out.println("id avion => "+product.getIdAvion() + " ilay avion "+product.getAvion().getIdModel());
             prods.add(product);
         }
         return prods;

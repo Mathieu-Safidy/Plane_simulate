@@ -22,7 +22,9 @@ src/entity/place/PlaceReserve.java
 src/entity/place/DetailSiege.java
 src/entity/filtre/Filtre.java
 src/entity/lieu/Ville.java
+src/entity/passport/Passport.java
 src/entity/entite/Users.java
+src/entity/entite/Passport.java
 src/entity/entite/Role.java
 src/entity/event/Reservation.java
 src/entity/event/Vols.java

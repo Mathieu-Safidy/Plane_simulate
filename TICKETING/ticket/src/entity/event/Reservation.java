@@ -1,6 +1,7 @@
 package entity.event;
 
 import java.sql.Timestamp;
+import java.io.File;
 import java.lang.reflect.Parameter;
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 import org.springcopy.core.FileMap;
 
 import entity.entite.Users;
+import entity.passport.Passport;
 import entity.place.PlaceReserve;
 import entity.place.TypeSiege;
 import exception.ClientException;
@@ -61,6 +63,12 @@ public class Reservation extends Entity {
 
     @Ignore
     FileMap file;
+
+    @Ignore
+    int nombre_adult;
+
+    @Ignore
+    int nombre_enfant;
 
     public TypeSiege getType() {
         return type;
@@ -152,6 +160,11 @@ public class Reservation extends Entity {
     public void setFile(FileMap file) {
         this.file = file;
     }
+
+    public FileMap getFile() {
+        return this.file;
+    }
+    
     
     public void setUserBase() throws Exception {
         if(this.idUser != null)  {
@@ -214,28 +227,80 @@ public class Reservation extends Entity {
             }
             Object[] data = this.insertTrans();
             con = ((Connection)data[0]);
+
+            FileMap file = this.getFile();
+            System.out.println("Ecriture de fichier dans /opt/uploads");
+            
+            // Passport pass = new Passport( this.getIdUser(),filepath);
+            Passport pass = new Passport();
+            pass.setDirectory("/opt/uploads");
+            pass.setFileName(file.getFilename());
+            pass.setId_users(this.getIdUser());
+            file.setFilename(pass.getFileName());
+            // String filepath = "/opt/uploads/"+file.getFilename();
+
+            pass.insertWithConnection(con);
             // int nombre = this.detailReservation.getNombre();
-            for (int i = 0; i < this.getNombre(); i++) {
+            for (int i = 0; i < this.getNombre_enfant(); i++) {
                 double prix = 0.0;
                 PlaceReserve places = new PlaceReserve();
                 prix = this.detailReservation.getPrix();
+                Parametre parameter = new Parametre();
+                parameter.setIdParametre("PRM000004");
+                parameter = parameter.convertToParametre(parameter.find(null, null)).get(0);
+
+                double value_reduction = parameter.getValeur()/100;
+                double prix_init = prix;
+                prix = prix - (prix*(value_reduction));
+                
                 if (this.detailReservation.getIdPromotion() != null) {
                     places.setIdPromotion(this.detailReservation.getIdPromotion());
                     Promotion prom = new Promotion();
                     prom.setIdPromotion(this.detailReservation.getIdPromotion());
                     prom = (Promotion) prom.find(null, null)[0];
                     System.out.println("Timestamp resa "+this.getDateReservation()+" ; "+prom.getDatePromotion()+ " ; "+ prom.getDateFin());
-                   
+                    if(this.getDateReservation().after(prom.getDatePromotion()) && this.getDateReservation().before(prom.getDateFin())) {
+                       prix = (prix)*((100-prom.getValeur())/100);
+                    }
+                    places.setPrix(prix);
+                }
+                System.out.println("value reduction adult "+value_reduction+" prix reduit "+prix+" prix initial "+prix_init);
+                places.setIdReservation((String)data[1]);
+                places.setIdType(this.detailReservation.getIdType());
+                places.setPrix(prix);
+                places.insertWithConnection(con);
+                
+            }
+            for (int i = 0; i < this.getNombre_adult(); i++) {
+                double prix = 0.0;
+                PlaceReserve places = new PlaceReserve();
+                prix = this.detailReservation.getPrix();
+                Parametre parameter = new Parametre();
+                parameter.setIdParametre("PRM000003");
+                parameter = parameter.convertToParametre(parameter.find(null, null)).get(0);
+                double prix_init = prix;
+                double value_reduction = parameter.getValeur()/100;
+                prix = prix - (prix*(value_reduction));
+                if (this.detailReservation.getIdPromotion() != null) {
+                    places.setIdPromotion(this.detailReservation.getIdPromotion());
+                    Promotion prom = new Promotion();
+                    prom.setIdPromotion(this.detailReservation.getIdPromotion());
+                    prom = (Promotion) prom.find(null, null)[0];
+                    System.out.println("Timestamp resa "+this.getDateReservation()+" ; "+prom.getDatePromotion()+ " ; "+ prom.getDateFin());
                     if(this.getDateReservation().after(prom.getDatePromotion()) && this.getDateReservation().before(prom.getDateFin())) {
                         prix = (prix)*((100-prom.getValeur())/100);
                     }
                     places.setPrix(prix);
                 }
+                System.out.println("value reduction adult "+value_reduction+" et => "+value_reduction/100+" prix reduit "+prix+" prix initial "+prix_init);
                 places.setIdReservation((String)data[1]);
                 places.setIdType(this.detailReservation.getIdType());
                 places.setPrix(prix);
                 places.insertWithConnection(con);
+                
             }
+            file.ecritureFichier("");
+            
             con.commit();
 
         }catch (ClientException ex) {
@@ -345,6 +410,22 @@ public class Reservation extends Entity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public int getNombre_adult() {
+        return nombre_adult;
+    }
+
+    public void setNombre_adult(int nombre_adult) {
+        this.nombre_adult = nombre_adult;
+    }
+
+    public int getNombre_enfant() {
+        return nombre_enfant;
+    }
+
+    public void setNombre_enfant(int nombre_enfant) {
+        this.nombre_enfant = nombre_enfant;
     }
 
 

@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import entity.event.ReservationMere;
 import entity.event.VDetailVolsDispo;
 import entity.event.Vols;
+import entity.place.DetailSiege;
 
 public class Filtre {
 
@@ -37,9 +39,20 @@ public class Filtre {
 
     Integer place;
 
+    Integer placeAdult;
+
+    Integer placeEnfant;
+
     String idType;
 
+    String idType_adult;
+    
+    String idType_enfant;
+
     Integer nombre;
+
+    Integer type;
+    
 
     // String option;
 
@@ -140,6 +153,8 @@ public class Filtre {
     // }
     // }
 
+    
+
     public List<VDetailVolsDispo> filtrerVol() throws Exception {
         List<VDetailVolsDispo> vols = new ArrayList<>();
         VDetailVolsDispo vol = new VDetailVolsDispo();
@@ -163,7 +178,7 @@ public class Filtre {
                 Time tempHeuremax = Time.valueOf("23:59:59");
 
                 LocalDate localDate = dateDep.toLocalDate();
-                
+
                 LocalTime localTimemin = tempHeuremin.toLocalTime();
                 LocalTime localTimemax = tempHeuremax.toLocalTime();
 
@@ -176,11 +191,11 @@ public class Filtre {
                 value.put("min", timestampmin);
                 value.put("max", timestampmax);
 
-                if(this.getPlace() != null) {
+                if (this.getPlace() != null) {
                     list.add("quantite");
                     value2.put("min", this.getPlace());
                 }
-                
+
                 listMap.add(value);
                 listMap.add(value2);
                 vols = vol.convertToVDetailVolsDispo(vol.find(list, listMap));
@@ -193,9 +208,9 @@ public class Filtre {
         return vols;
     }
 
-    public List<Vols> filtrerVols() throws Exception {
-        List<Vols> vols = new ArrayList<>();
-        Vols vol = new Vols();
+    public List<VDetailVolsDispo> filtrerVols() throws Exception {
+        List<VDetailVolsDispo> vols = new ArrayList<>();
+        VDetailVolsDispo vol = new VDetailVolsDispo();
         if (this.villeArrive != null) {
             vol.setIdVilleArrive(villeArrive);
         }
@@ -242,7 +257,9 @@ public class Filtre {
                 throw e;
             }
         }
-        vols = vol.convertToVols(vol.find(list, listMap));
+        vols = vol.convertToVDetailVolsDispo(vol.find(list, listMap));
+       
+                
 
         return vols;
     }
@@ -285,6 +302,46 @@ public class Filtre {
 
     public void setIdReservation(String idReservation) {
         this.idReservation = idReservation;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getPlaceAdult() {
+        return placeAdult;
+    }
+
+    public void setPlaceAdult(Integer placeAdult) {
+        this.placeAdult = placeAdult;
+    }
+
+    public Integer getPlaceEnfant() {
+        return placeEnfant;
+    }
+
+    public void setPlaceEnfant(Integer placeEnfant) {
+        this.placeEnfant = placeEnfant;
+    }
+
+    public String getIdType_adult() {
+        return idType_adult;
+    }
+
+    public void setIdType_adult(String idType_adult) {
+        this.idType_adult = idType_adult;
+    }
+
+    public String getIdType_enfant() {
+        return idType_enfant;
+    }
+
+    public void setIdType_enfant(String idType_enfant) {
+        this.idType_enfant = idType_enfant;
     }
 
     // public String getOption() {

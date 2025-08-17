@@ -496,7 +496,7 @@ public abstract class Entity {
                             double valeur = ((BigDecimal) value).doubleValue();
                             setField(f.getName(), add, valeur);
                         } else {
-                            System.out.println("valeur : "+value);
+                            System.out.println(f.getName()+" valeur : "+value);
                             setField(f.getName(), add, value);
                         }
                     } catch (Exception e) {

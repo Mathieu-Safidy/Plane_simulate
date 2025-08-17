@@ -20,7 +20,7 @@ public class Parametre {
     private BigDecimal valeur;
 
     @Column(name = "date_ajout")
-    private LocalDate dateAjout;
+    private LocalDate dateAjout = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type")

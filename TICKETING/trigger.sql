@@ -82,6 +82,12 @@ FOR EACH ROW
 WHEN (NEW.id_type IS NULL)
 EXECUTE FUNCTION assigner_id();
 
+CREATE TRIGGER passport_trigger
+BEFORE INSERT ON passport
+FOR EACH ROW
+WHEN (NEW.id_passport IS NULL)
+EXECUTE FUNCTION assigner_id();
+
 
 -- 
 
